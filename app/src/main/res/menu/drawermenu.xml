@@ -6,7 +6,7 @@
     <item android:title="YouTuber Auswahl"
         android:id="@+id/youtuberauswahl"
         android:layout_marginTop="10dp"
-        android:icon="@drawable/kopficon" />
+        android:icon="@drawable/shareimg" />
 
     <item android:title="App teilen"
         android:id="@+id/teilen"
@@ -26,10 +26,7 @@
                 android:icon="@drawable/emailicon"
                 android:title="E-Mail schreiben" />
 
-            <item
-                android:id="@+id/impressum"
-                android:icon="@drawable/impressum"
-                android:title="Info" />
+
 
         </menu>
     </item>

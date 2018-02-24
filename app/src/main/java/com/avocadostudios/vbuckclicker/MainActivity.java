@@ -83,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
         klicksForAd=3000;
         klicksForRating = 10000;
 
-        rewardtext = "3000 Klicks gutgeschrieben !";
-        ratingtext = "10000 Klicks gutgeschrieben !";
+        rewardtext = "3,000 clicks have been added to your progress!";
+        ratingtext = "10,000 clicks have been added to your progress!";
 
         if (internetAvailabel()) {
             adMargin = 150;
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
             AlertDialog.Builder a_builder = new AlertDialog.Builder(this);
             a_builder.setMessage(R.string.begruessungsText)
                     .setCancelable(true)
-                    .setPositiveButton("Versteh ich nicht", new DialogInterface.OnClickListener() {
+                    .setPositiveButton("I don‘t get it... ", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.cancel();
@@ -187,7 +187,6 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
     }
 
-
     public void ifGameIsOver(){
         ImageView normalbild = (ImageView)findViewById(bildID);
         if(klickzahl <= 0){
@@ -203,12 +202,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
-    /** +++++++++ BUTTONS Start +++++++++++++ */
-
     //Click auf den Kopf vom YouTuber
     public void click(){
+        zahlenfeld.setText(klickzahl+"");
 
         image.setImageResource(normalbild);
         image.setOnTouchListener(new View.OnTouchListener() {
@@ -410,8 +406,6 @@ public class MainActivity extends AppCompatActivity {
 
 }
 
-
-
     //Anzeigen des Ads
     public void startAd(){
         mAd.show();
@@ -431,8 +425,6 @@ public class MainActivity extends AppCompatActivity {
         param.setMargins(0, MainActivity.adMargin, 0, 0);
         relativeLayout.setLayoutParams(param);
     }
-
-
 
     //Laden des Ads + AdListener
     public void loadAd(){
@@ -505,9 +497,5 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    //Abfrage ob 0 erreicht wurde
 }
-
-    /** +++++++++ Abfragen etc. Ende +++++++++++++ */
 
