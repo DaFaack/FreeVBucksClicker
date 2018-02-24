@@ -1,6 +1,5 @@
-package com.pentabuttons.handynummernvonyoutubern;
+package com.avocadostudios.vbuckclicker;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,11 +10,20 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -29,12 +37,13 @@ import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 import com.penta.games.handynummernvonyoutuber.R;
 
+public class MainActivity extends AppCompatActivity {
 
-public class YoutuberActivity extends AppCompatActivity {
+
 
     TextView zahlenfeld;
     int klickzahl;
-    int normalbild, kleinbild, bildID,zahlenfeldID;
+    int normalbild, kleinbild, bildID;
     String zahlname;
     ImageView image;
     RelativeLayout relativeLayout;
@@ -43,67 +52,67 @@ public class YoutuberActivity extends AppCompatActivity {
     ImageView rewardButton;
     ImageView ratingButton;
     public RewardedVideoAd mAd;
-    ScrollView scrollView;
 
-    @SuppressLint("ClickableViewAccessibility")
+    int gesamtklicks;
+    public static int klicksound = R.raw.push;
+    public static int backsound = R.raw.pull;
+    public static int lotofklicks = R.raw.rewardsound;
+
+
+    public static int clickzahl;
+
+
+    public static int adMargin;
+
+    public static boolean reward;
+    public static String rewardtext;
+    public static String ratingtext;
+
+    public static long lastAdTime;
+
+    public static int klicksForRating;
+    public static int klicksForAd;
+
+    public static boolean userRatedUs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.youtuber_layout);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.nav_action);
-        setSupportActionBar(toolbar);
+        klicksForAd=3000;
+        klicksForRating = 10000;
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        rewardtext = "3000 Klicks gutgeschrieben !";
+        ratingtext = "10000 Klicks gutgeschrieben !";
 
-        bildID = R.id.image;
-
-        //+++++++++++++++++++++++++++
-
-        switch (MainActivity.youtuber+""){
-            case "youtuber_layout":
-                klickzahl= MainActivity.lukaszahl;
-                zahlname="lukaszahl";
-                normalbild=R.drawable.lukas;
-                kleinbild=R.drawable.lukasklein;
-                break;
-            case "mikesinger":
-                klickzahl= MainActivity.mikezahl;
-                zahlname="mikezahl";
-                normalbild=R.drawable.mikesinger;
-                kleinbild=R.drawable.mikesingerklein;
-                break;
-            case "julienbam":
-                klickzahl= MainActivity.julienzahl;
-                zahlname="julienzahl";
-                normalbild=R.drawable.juliennew;
-                kleinbild=R.drawable.julienkleinnew;
-                break;
-            case "bibisbeautypalace":
-                klickzahl= MainActivity.bibizahl;
-                zahlname="bibizahl";
-                normalbild=R.drawable.bibi;
-                kleinbild=R.drawable.bibiklein;
-                break;
-            case "tanzverbot":
-                klickzahl= MainActivity.tanzizahl;
-                zahlname="tanzizahl";
-                normalbild=R.drawable.tanzi;
-                kleinbild=R.drawable.tanziklein;
-                break;
-            case "dagibee":
-                klickzahl= MainActivity.dagizahl;
-                zahlname="dagizahl";
-                normalbild=R.drawable.dagi;
-                kleinbild=R.drawable.dagiklein;
-                break;
-
+        if (internetAvailabel()) {
+            adMargin = 150;
+        } else {
+            adMargin = 0;
         }
 
 
+        gesamtklicks = 100000;
 
 
-        //+++++++++++++++++++++++++++
+        SharedPreferences prefs = getSharedPreferences("werte", 0);
+        clickzahl = prefs.getInt("clickzahl", gesamtklicks);
+        userRatedUs = prefs.getBoolean("userRatedUs", false);
+
+
+
+
+
+
+        bildID = R.id.image;
+
+
+                klickzahl= clickzahl;
+                zahlname="clickzahl";
+                normalbild=R.drawable.buck;
+                kleinbild=R.drawable.buckklein;
+
 
 
 
@@ -114,27 +123,87 @@ public class YoutuberActivity extends AppCompatActivity {
         ratingButton = (ImageView)findViewById(R.id.ratingButton);
         zahlenfeld = (TextView)findViewById(R.id.zahlenfeld);
         image = (ImageView)findViewById(bildID);
-        scrollView = (ScrollView)findViewById(R.id.mScrollView);
 
 
-        anfangsLayoutErstellen();
-
-        //Button Klicks
+        firstRunDialog();
         click();
         rating();
         rewardAd();
-
-        //Werbung
         adListener();
         loadAd();
-
-
         ifGameIsOver();
 
         if(MainActivity.userRatedUs){
             ratingButton.setVisibility(View.INVISIBLE);
         }
     }
+
+
+
+    public boolean internetAvailabel() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnectedOrConnecting();
+    }
+
+
+    public static void cleanUpMediaPlayer(MediaPlayer mp) {
+        if (mp != null) {
+            try {
+                mp.stop();
+                mp.release();
+                mp = null;
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
+        }
+    }
+
+    public void firstRunDialog() {
+        SharedPreferences prefs = getSharedPreferences("werte", 0);
+        boolean b = prefs.getBoolean("firstrun", true);
+
+        if (b) {
+            AlertDialog.Builder a_builder = new AlertDialog.Builder(this);
+            a_builder.setMessage(R.string.begruessungsText)
+                    .setCancelable(true)
+                    .setPositiveButton("Versteh ich nicht", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+
+            AlertDialog alert = a_builder.create();
+            alert.setTitle(R.string.begeruessungsTitle);
+            alert.show();
+        }
+
+
+        SharedPreferences sh = getSharedPreferences("werte", 0);
+        SharedPreferences.Editor editor = sh.edit();
+        editor.putBoolean("firstrun", false);
+        editor.commit();
+    }
+
+
+    public void ifGameIsOver(){
+        ImageView normalbild = (ImageView)findViewById(bildID);
+        if(klickzahl <= 0){
+            normalbild.setVisibility(View.INVISIBLE);
+            zahlenfeld.setVisibility(View.INVISIBLE);
+            rewardButton.setVisibility(View.INVISIBLE);
+            ratingButton.setVisibility(View.INVISIBLE);
+
+
+
+            plottwist.setVisibility(View.VISIBLE);
+
+        }
+    }
+
+
 
     /** +++++++++ BUTTONS Start +++++++++++++ */
 
@@ -208,7 +277,7 @@ public class YoutuberActivity extends AppCompatActivity {
 
                         if(internetAvailabel()){
                             //Intent zum Google Play store
-                            String url = "https://play.google.com/store/apps/details?id=com.pentabuttons.handynummernvonyoutubern&hl=de";
+                            String url = "https://play.google.com/store/apps/details?id=com.avocadostudios.youtuberinreallife&hl=de";
                             Intent intent = new Intent();
                             intent.setAction(Intent.ACTION_VIEW);
                             intent.setData(Uri.parse(url));
@@ -225,10 +294,10 @@ public class YoutuberActivity extends AppCompatActivity {
 
 
                                     //Dialog
-                                    AlertDialog.Builder a_builder = new AlertDialog.Builder(YoutuberActivity.this);
+                                    AlertDialog.Builder a_builder = new AlertDialog.Builder(MainActivity.this);
                                     a_builder.setMessage(R.string.ratingText)
                                             .setCancelable(false)
-                                            .setPositiveButton("Belohnug bekommen", new DialogInterface.OnClickListener() {
+                                            .setPositiveButton("Claim your reward!", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int i) {
 
@@ -289,7 +358,6 @@ public class YoutuberActivity extends AppCompatActivity {
 
 
 
-
     }
 
     //RewardAd Button
@@ -316,11 +384,11 @@ public class YoutuberActivity extends AppCompatActivity {
                         if(mAd.isLoaded()){
                             startAd();
                         }else if(internetAvailabel()){
-                            Toast.makeText(YoutuberActivity.this, "Werbung noch nicht geladen, versuche es später erneut", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Werbung noch nicht geladen, versuche es später erneut", Toast.LENGTH_SHORT).show();
 
 
                         }else{
-                            Toast.makeText(YoutuberActivity.this, "Überprüfe deine Internetverbindung", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this, "Check your internet connection!", Toast.LENGTH_SHORT).show();
                         }
 
 
@@ -340,20 +408,9 @@ public class YoutuberActivity extends AppCompatActivity {
 
 
 
-    }
-
-    //Überweisung der onBackPressed Eigenschaften an den Backbutton
-    public void backbutton(View view){
-        onBackPressed();
-    }
-
-    /** +++++++++ BUTTONS Ende +++++++++++++ */
+}
 
 
-
-
-
-    /** +++++++++ Abfragen etc. Start +++++++++++++ */
 
     //Anzeigen des Ads
     public void startAd(){
@@ -375,22 +432,13 @@ public class YoutuberActivity extends AppCompatActivity {
         relativeLayout.setLayoutParams(param);
     }
 
-    public void onBackPressed() {
-        super.onBackPressed();
 
-        MainActivity.cleanUpMediaPlayer(mp);
-        mp = MediaPlayer.create(getApplication(), MainActivity.backsound);
-        mp.start();
-
-        Intent i = new Intent(YoutuberActivity.this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(i);
-    }
 
     //Laden des Ads + AdListener
     public void loadAd(){
 
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAd = MobileAds.getRewardedVideoAdInstance(YoutuberActivity.this);
+        mAd = MobileAds.getRewardedVideoAdInstance(MainActivity.this);
         mAd.loadAd("ca-app-pub-8919538156550588/1410808346", adRequest);
 
         mAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
@@ -457,41 +505,9 @@ public class YoutuberActivity extends AppCompatActivity {
 
     }
 
-    //Abfrage ob Internet verfügbar ist
-    public boolean internetAvailabel(){
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnectedOrConnecting();
-    }
-
 
     //Abfrage ob 0 erreicht wurde
-    public void ifGameIsOver(){
-        ImageView normalbild = (ImageView)findViewById(bildID);
-        if(klickzahl <= 0){
-            normalbild.setVisibility(View.INVISIBLE);
-            zahlenfeld.setVisibility(View.INVISIBLE);
-            rewardButton.setVisibility(View.INVISIBLE);
-            ratingButton.setVisibility(View.INVISIBLE);
-
-
-
-            plottwist.setVisibility(View.VISIBLE);
-
-        }
-    }
+}
 
     /** +++++++++ Abfragen etc. Ende +++++++++++++ */
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-
-    public void anfangsLayoutErstellen(){
-        image.setImageResource(normalbild);
-        zahlenfeld.setText(klickzahl+"");
-    }
-
-}

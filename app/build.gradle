@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.pentabuttons.handynummernvonyoutubern"
+        applicationId "com.avocadostudios.vbucksclicker"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
@@ -26,10 +26,10 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:appcompat-v7:26.0.0-beta1'
+    compile 'com.android.support:design:26.0.0-beta1'
     compile 'com.android.support.constraint:constraint-layout:1.0.1'
-    compile 'com.android.support:recyclerview-v7:25.3.1'
+    compile 'com.android.support:recyclerview-v7:26.0.0-beta1'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.google.android.gms:play-services-ads:10.2.0'
     compile 'com.google.firebase:firebase-ads:10.2.0'

@@ -1,4 +1,4 @@
-package com.pentabuttons.handynummernvonyoutubern;
+package com.avocadostudios.vbuckclicker;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

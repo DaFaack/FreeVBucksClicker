@@ -22,10 +22,6 @@
     <item android:title="Kontakt">
         <menu>
             <item
-                android:id="@+id/instagram"
-                android:icon="@drawable/instaicon"
-                android:title="Instagram" />
-            <item
                 android:id="@+id/email"
                 android:icon="@drawable/emailicon"
                 android:title="E-Mail schreiben" />
