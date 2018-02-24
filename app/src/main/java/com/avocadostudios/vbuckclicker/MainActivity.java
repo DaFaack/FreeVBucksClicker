@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -122,6 +123,9 @@ public class MainActivity extends AppCompatActivity {
         rewardButton = (ImageView)findViewById(R.id.rewardButton);
         ratingButton = (ImageView)findViewById(R.id.ratingButton);
         zahlenfeld = (TextView)findViewById(R.id.zahlenfeld);
+        Typeface fortnite_schrift = Typeface.createFromAsset(getAssets(),  "fonts/fortnite_schrift.ttf");
+        zahlenfeld.setTypeface(fortnite_schrift);
+
         image = (ImageView)findViewById(bildID);
 
 

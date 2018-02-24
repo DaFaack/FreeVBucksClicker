@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Free VBucks Clicker.iml" filepath="$PROJECT_DIR$/Free VBucks Clicker.iml" />
+      <module fileurl="file://C:\Users\Jakob2000\AndroidStudioProjects\FreeVBucksClicker\Free VBucks Clicker.iml" filepath="C:\Users\Jakob2000\AndroidStudioProjects\FreeVBucksClicker\Free VBucks Clicker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/FreeVBucksClicker.iml" filepath="$PROJECT_DIR$/.idea/FreeVBucksClicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\Jakob2000\AndroidStudioProjects\FreeVBucksClicker\app\app.iml" filepath="C:\Users\Jakob2000\AndroidStudioProjects\FreeVBucksClicker\app\app.iml" />
     </modules>
   </component>
 </project>
