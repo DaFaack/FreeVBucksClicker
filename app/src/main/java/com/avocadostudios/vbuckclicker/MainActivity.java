@@ -53,6 +53,9 @@ public class MainActivity extends AppCompatActivity {
     ImageView ratingButton;
     public RewardedVideoAd mAd;
 
+    DrawerLayout mDrawerLayout;
+    NavigationView mNavigationView;
+
     int gesamtklicks;
     public static int klicksound = R.raw.push;
     public static int backsound = R.raw.pull;
@@ -102,6 +105,93 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mNavigationView = (NavigationView) findViewById(R.id.shitstuff);
+
+
+        mNavigationView.setItemIconTintList(null);
+
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                mDrawerLayout.closeDrawers();
+
+                String url;
+                url="https://play.google.com/store/apps/developer?id=PentaButtons";
+
+                Boolean link;
+                link=true;
+
+                switch (menuItem.getItemId()){
+
+
+                    case R.id.clicker:
+                        Intent a = new Intent(MainActivity.this, MainActivity.class);
+                        a.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                        startActivity(a);
+                        break;
+
+
+                    case R.id.explanation:
+                        AlertDialog.Builder a_builder = new AlertDialog.Builder(MainActivity.this);
+                        a_builder.setMessage(R.string.begruessungsText)
+                                .setCancelable(true)
+                                .setPositiveButton("Versteh ich nicht", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                        AlertDialog alert = a_builder.create();
+                        alert.setTitle(R.string.begeruessungsTitle);
+                        alert.show();
+                        break;
+
+                    case R.id.teilen:
+                        link=false;
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                        shareIntent.setType("text/plain");
+                        shareIntent.putExtra(Intent.EXTRA_SUBJECT, "✶"+ R.string.app_name +"✶");
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, "✶Go and check out the" + " \"" +  getText(R.string.app_name) + "\" " + "✶\n\n " + getText(R.string.link_zur_app));
+                        startActivity(Intent.createChooser(shareIntent,  "Share via"));
+                        break;
+                    case R.id.email:
+                        link=false;
+                        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                                "mailto","avocadostudios.business@gmail.com", null));
+                        emailIntent.putExtra(Intent.EXTRA_TEXT, "\n\n\n\n\n\n\n\n[Packagename:com.avocadostudios.vbucksclicker ---Don't delete this information---]");
+                        startActivity(Intent.createChooser(emailIntent, "Send E-Mail..."));
+                        break;
+
+                }
+                if(link){
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    onPause();
+                    startActivity(intent);
+                }
+
+
+
+
+
+
+                return false;
+            }
+
+        });
+
+
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name,
+                R.string.app_name);
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        mDrawerToggle.syncState();
 
 
 

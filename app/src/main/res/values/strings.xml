@@ -18,6 +18,7 @@ Have fun clicking!</string>
     <string name="ratingText">Thank you very much for your rating, here‘s your reward.</string>
 
     <string name="checkInternetConnection">Check your internet connection!</string>,
+    <string name="link_zur_app">https://play.google.com/store/apps/details?id=com.aaron.waller.yeahboy</string>
 
     <string name="open">Open</string>
     <string name="close">Close</string>

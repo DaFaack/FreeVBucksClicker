@@ -3,28 +3,28 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_marginTop="10dp">
 
-    <item android:title="YouTuber Auswahl"
-        android:id="@+id/youtuberauswahl"
+    <item android:title="Clicker"
+        android:id="@+id/clicker"
         android:layout_marginTop="10dp"
-        android:icon="@drawable/shareimg" />
+        android:icon="@drawable/clickicon" />
 
-    <item android:title="App teilen"
+    <item android:title="Share this App"
         android:id="@+id/teilen"
         android:layout_marginTop="10dp"
         android:icon="@drawable/shareimg" />
 
-    <item android:title="Erklärung"
-        android:id="@+id/erklaerung"
+    <item android:title="How it works"
+        android:id="@+id/explanation"
         android:layout_marginTop="10dp"
         android:icon="@drawable/infoicon" />
 
 
-    <item android:title="Kontakt">
+    <item android:title="Contact">
         <menu>
             <item
                 android:id="@+id/email"
                 android:icon="@drawable/emailicon"
-                android:title="E-Mail schreiben" />
+                android:title="Report an issue" />
 
 
 
